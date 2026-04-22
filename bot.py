@@ -34,10 +34,6 @@ backend_url: str = ""
 user_voices: dict[int, bytes] = {}
 
 
-def is_captain(update: Update) -> bool:
-    return update.effective_user.id == CAPTAIN_ID
-
-
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🎙️ *Voice Clone Bot*\n\n"
@@ -77,8 +73,8 @@ async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_seturl(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Капитан устанавливает URL бэкенда (Colab ngrok)."""
-    if not is_captain(update):
+    """Устанавливает URL бэкенда (Colab ngrok). Только капитан."""
+    if update.effective_user.id != CAPTAIN_ID:
         await update.message.reply_text("⛔ Только капитан может менять URL")
         return
 
